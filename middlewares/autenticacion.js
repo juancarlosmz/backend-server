@@ -15,11 +15,11 @@ exports.verificaToken = function(req, res, next) {
                 errors: err
             });
         }
-        //req.usuario = decoded.usuario;
-        //next();
-        res.status(200).json({
+        req.usuario = decoded.usuario;
+        next();
+        /* res.status(200).json({
             ok: true,
             decoded: decoded
-        });
+        }); */
     });
 }
