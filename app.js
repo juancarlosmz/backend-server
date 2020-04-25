@@ -1,43 +1,25 @@
 // Requires
 var express = require('express');
-var mysql = require('mysql');
-
+var bodyParser = require('body-parser')
 
 // inicializar variables
 var app = express();
 
-//conexion amysql
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'data'
-});
-connection.connect(function(err) {
-    if (err) {
-        throw err;
-    } else {
-        console.log('Express server mysql puerto 50: \x1b[32m%s\x1b[0m', 'online');
-    }
-});
+//body parser
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
-/* connection.query('SELECT 1', function (error, results, fields) {
-    if (err){
-        throw err;
-    } else {
-        console.log('Express server mysql puerto 50: \x1b[32m%s\x1b[0m', 'online');
-    }
-}); */
+// Importar Rutas
+var appRoutes = require('./routes/app');
+var usuarioRoutes = require('./routes/usuarios');
+var loginRoutes = require('./routes/login');
 
-//Rutas
-app.get('/', (req, res, next) => {
-    res.status(200).json({
-        ok: true,
-        mensaje: 'Peticion realizada correctamente'
-    });
-});
+// Rutas (Middleware)
+app.use('/', appRoutes);
+app.use('/user', usuarioRoutes);
+app.use('/login', loginRoutes);
 
-// Escuchar peticion
+// Escuchar peticion (puerto)
 app.listen(3000, () => {
     console.log('Express server puerto 3000: \x1b[32m%s\x1b[0m', 'online');
 });
